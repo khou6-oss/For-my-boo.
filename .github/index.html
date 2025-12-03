@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>For My Boo</title>
+<style>
+    body {
+        background: #ffd6e8;
+        font-family: "Tahoma";
+        text-align: center;
+        padding: 20px;
+        color: #b3005c;
+    }
+    .counter {
+        font-size: 28px;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    .message {
+        background: #ffffffaa;
+        padding: 15px;
+        border-radius: 12px;
+        margin-top: 25px;
+        font-size: 20px;
+        line-height: 1.6;
+    }
+    .notes-box {
+        margin-top: 25px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: right;
+    }
+    textarea {
+        width: 100%;
+        height: 90px;
+        border-radius: 10px;
+        border: none;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #ff5fa2;
+        color: white;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>For My Boo 💗</h1>
+
+<div class="counter" id="counter"></div>
+
+<div class="message" id="dailyMessage"></div>
+
+<div class="notes-box">
+    <h3>ملاحظاتك 📝</h3>
+    <div id="notesList"></div>
+
+    <textarea id="noteInput" placeholder="أكتبي ملاحظة هنا…"></textarea>
+    <button onclick="addNote()">إضافة ملاحظة</button>
+</div>
+
+<script>
+// -------------------------------
+// قائمة الرسائل اليومية
+// -------------------------------
+const messages = [
+    "علابالك شوا كندير درك ؟ نخمم فيك💭💗",
+    "لوكان جيت قطة تڤولي pspsps 🙄😔",
+    "نتا أجمل حاجة صراتلي 🫶🏻❤️",
+    "عجبتك l'app هادي؟ درتها باش نفرحك 🩷",
+    "نحبك مام منڤولهاش كل نهار 😭💗",
+    "Bcc coucou saha 3idkom 😂😂 معلاباليش لماه كتبتها",
+    "نهار لي عرفتك فيه منسيتوش يبان كان لبارح 😩",
+    "شوا ڤاعد دير؟ توحشتيني 🙄",
+    "لوكان نتخاصمو تسوبريمي for my boo ولا تخليها 🤧",
+    "اول مرة ندير app فحياتي ودرتها على جالك 😔💗",
+    "Ily !🩷 اختصار I love you 😬🖖🏻",
+    "تعجبك كلمة best friend ؟ نتا best friend تاعي 🐣",
+    "كوتي كوتي يا خلاصو 👶🏻",
+    "ملڤيتش شوا نڤولك ليوم 😬",
+    "لوكان جيت فراشة تصيدني؟ 😑",
+    "ڤداه عمرنا ليوم ؟ جاوب فلنسطا 🙄",
+    "كي تغمض عينيك وتشوف 2046، تلقاني معاك؟"
+];
+
+// -------------------------------
+// رسالة اليوم
+// -------------------------------
+let today = new Date();
+let index = today.getDate() % messages.length;
+document.getElementById("dailyMessage").innerHTML = messages[index];
+
+// -------------------------------
+// عدّاد العلاقة من 28 جوان 2023
+// -------------------------------
+let start = new Date(2023, 5, 28); 
+let diff = today - start;
+
+let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+let years = Math.floor(days / 365);
+let months = Math.floor((days % 365) / 30);
+let restDays = (days % 365) % 30;
+
+document.getElementById("counter").innerHTML =
+    years + " سنة • " + months + " شهر • " + restDays + " يوم";
+
+// -------------------------------
+// الملاحظات (تخزن في LocalStorage)
+// -------------------------------
+function loadNotes() {
+    let notes = localStorage.getItem("notes");
+    if (!notes) return;
+
+    notes = JSON.parse(notes);
+
+    let list = document.getElementById("notesList");
+    list.innerHTML = "";
+    
+    notes.forEach(n => {
+        let div = document.createElement("div");
+        div.style.padding = "5px";
+        div.innerText = "• " + n;
+        list.appendChild(div);
+    });
+}
+
+function addNote() {
+    let text = document.getElementById("noteInput").value.trim();
+    if (!text) return;
+
+    let notes = localStorage.getItem("notes");
+    notes = notes ? JSON.parse(notes) : [];
+
+    notes.push(text);
+    localStorage.setItem("notes", JSON.stringify(notes));
+
+    document.getElementById("noteInput").value = "";
+    loadNotes();
+}
+
+loadNotes();
+</script>
+
+</body>
+</html>
